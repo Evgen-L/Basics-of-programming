@@ -41,7 +41,5 @@ BEGIN
       THEN
         Sum := Sum + Int;
       WRITELN('Сумма цифр текста до первого нецифрового символа: ', Sum)
-    END
-  ELSE
-    WRITELN('Была введена пустая строка')           
+    END 
 END.  

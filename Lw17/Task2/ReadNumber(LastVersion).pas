@@ -31,14 +31,12 @@ BEGIN{ReadDigit}
 END;{ReadDigit}
 BEGIN{ReadNumber}
   Digit := 0;
-  Count := 0;
   WHILE NOT EOLN(FromFile) AND (Digit <> -1)
   DO
     BEGIN
       ReadDigit(FromFile, Digit); 
-      Count := Count + 1;
-      IF (( Number > (MAXINT DIV 10)) OR ((Number = MAXINT DIV 10) AND (Digit > 7))) AND (Count >= 10) 
-      THEN
+      IF (( Number > (MAXINT DIV 10)) OR ((Number = MAXINT DIV 10) AND (Digit > MAXINT MOD 10))) AND (Digit <> -1)
+      THEN                                                                                                        
         BEGIN
           Number := -1;
           Digit := -1
