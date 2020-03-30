@@ -1,0 +1,8 @@
+BEGIN READ();;;;; WRITE() END.
+ BEGIN READ() END.
+ BEGIN READ(); WRITELN(); END.
+ BEGIN READ(); READ(); READ(); READ(); READ(); READ() END.
+ BEGIN READ(Ch1, Ch2) END.
+BEGIN WRITE(,, ,, ' P P . ' );;; ; ; ;READ(P)END.
+ BEGIN WRITE(,, ,, ,,V, ' END. ;;;; ;') ; ;;;;;;; WRITELNEND.
+BEGIN WRITE(CBEGIN, CEND) END.
