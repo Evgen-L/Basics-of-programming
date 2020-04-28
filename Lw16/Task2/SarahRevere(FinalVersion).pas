@@ -29,10 +29,14 @@ BEGIN {SarahRevere}
       {проверка окна на Looking}
       Looking := (NOT EOLN);
       {движение окна}
-      W1 := W2;
-      W2 := W3;
-      W3 := W4;
-      READ(W4);
+      IF Looking
+      THEN
+        BEGIN
+          W1 := W2;
+          W2 := W3;
+          W3 := W4;
+          READ(W4)
+        END
     END;
   {создание сообщения Sarah}  
   IF Land
