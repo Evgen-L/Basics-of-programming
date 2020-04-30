@@ -1,6 +1,9 @@
 PROGRAM PseudoGraphicCharacterPrinting(INPUT, OUTPUT);
+CONST 
+  Min = 1;
+  Max = 25;
 TYPE
-  MaxMinCoordinates = SET OF 1..25;
+  MaxMinCoordinates = SET OF Min..Max;
 VAR 
   LetterCoordinates: MaxMinCoordinates;
   Ch: CHAR;
@@ -45,7 +48,7 @@ BEGIN
   IF LetterCoordinates <> []
   THEN
     BEGIN
-      FOR i := 1 TO 25 
+      FOR i := Min TO Max 
       DO
         BEGIN
           IF i IN LetterCoordinates
