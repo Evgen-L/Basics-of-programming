@@ -1,43 +1,32 @@
 PROGRAM SarahRevere(INPUT, OUTPUT);
 VAR
-  W1, W2, W3, W4: CHAR;
+  Ch1, Ch2, Ch3, Ch4: CHAR;
   Looking, Land, Sea: BOOLEAN;
-BEGIN {SarahRevere}  
-  {Инициализация}
-  Looking := TRUE;
-  Land := FALSE;
-  Sea := FALSE;
-  IF NOT EOLN
-  THEN
-    READ(W1);
-  IF NOT EOLN
-  THEN
-    READ(W2);
-  IF NOT EOLN
-  THEN
-    READ(W3);    
-  IF NOT EOLN
-  THEN
-    READ(W4);
+PROCEDURE CheckSeaLand(VAR Ch1, Ch2, Ch3, Ch4: CHAR; VAR Land, Sea, Looking: BOOLEAN);
+BEGIN
   WHILE ((Looking) AND NOT(Land OR Sea))  
   DO
     BEGIN
       {проверка окна на land}
-      Land := ((W1 = 'l') AND (W2 = 'a') AND (W3 = 'n') AND (W4 = 'd'));
+      Land := ((Ch1 = 'l') AND (Ch2 = 'a') AND (Ch3 = 'n') AND (Ch4 = 'd'));
       {проверка окна на sea}
-      Sea := ((W1 = 's') AND (W2 = 'e') AND (W3 = 'a'));
+      Sea := ((Ch1 = 's') AND (Ch2 = 'e') AND (Ch3 = 'a'));
       {проверка окна на Looking}
       Looking := (NOT EOLN);
       {движение окна}
       IF Looking
       THEN
         BEGIN
-          W1 := W2;
-          W2 := W3;
-          W3 := W4;
-          READ(W4)
+          Ch1 := Ch2;
+          Ch2 := Ch3;
+          Ch3 := Ch4;
+          READ(Ch4)
         END
     END;
+END;
+ 
+PROCEDURE MessageFromSarah(VAR Land, Sea: BOOLEAN);
+BEGIN
   {создание сообщения Sarah}  
   IF Land
   THEN
@@ -48,4 +37,25 @@ BEGIN {SarahRevere}
       WRITELN('The British coming by sea.')
     ELSE
       WRITELN('Sarah didn''t say')
+END;  
+
+BEGIN {SarahRevere}  
+  {Инициализация}
+  Looking := TRUE;
+  Land := FALSE;
+  Sea := FALSE;
+  IF NOT EOLN
+  THEN
+    READ(Ch1);
+  IF NOT EOLN
+  THEN
+    READ(Ch2);
+  IF NOT EOLN
+  THEN
+    READ(Ch3);    
+  IF NOT EOLN
+  THEN
+    READ(Ch4);
+  CheckSeaLand(Ch1, Ch2, Ch3, Ch4, Land, Sea, Looking);
+  MessageFromSarah(Land, Sea)
 END.  {SarahRevere}
