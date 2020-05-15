@@ -1,6 +1,6 @@
 PROGRAM SumOfDigits(INPUT, OUTPUT);
 VAR
-  Int, Sum: INTEGER;
+  Digit, Sum: INTEGER;
 PROCEDURE ReadDigit(VAR FromFile: TEXT; VAR Digit: INTEGER);
 {Считывает текущий символ из файла, если он - цифра, возвращает его 
  преобразуя в значение типа INTEGER. Если считанный символ не цифра
@@ -8,6 +8,7 @@ PROCEDURE ReadDigit(VAR FromFile: TEXT; VAR Digit: INTEGER);
 VAR
   Ch: CHAR;
 BEGIN
+  Digit := -1;
   IF NOT EOLN(FromFile)
   THEN
     BEGIN
@@ -22,24 +23,17 @@ BEGIN
       IF Ch = '7' THEN Digit := 7 ELSE
       IF Ch = '8' THEN Digit := 8 ELSE
       IF Ch = '9' THEN Digit := 9 
-        ELSE Digit := -1
     END                
 END;
 BEGIN
   Sum := 0;
-  Int := 0;
-  IF NOT EOLN(INPUT)
-  THEN
-    BEGIN
-      WHILE NOT EOLN(INPUT) AND (Int <> -1)
-      DO
-        BEGIN
-          Sum := Sum + Int;
-          ReadDigit(INPUT, Int)
-        END;
-      IF (Int <> -1)
-      THEN
-        Sum := Sum + Int;
-      WRITELN('Сумма цифр текста до первого нецифрового символа: ', Sum)
-    END 
+  Digit := 0;
+  ReadDigit(INPUT, Digit);
+  WHILE (Digit <> -1)
+  DO
+  BEGIN
+    Sum := Sum + Digit;
+    ReadDigit(INPUT, Digit)
+  END;
+  WRITELN('Сумма цифр текста до первого нецифрового символа: ', Sum)
 END.  
