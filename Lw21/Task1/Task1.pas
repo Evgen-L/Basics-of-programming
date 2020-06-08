@@ -4,13 +4,13 @@ PROGRAM Encryption(INPUT, OUTPUT);
 CONST
   Len = 20;
 TYPE
-  Str = ARRAY [1 .. Len] OF 'A' .. 'Z';
-  Chiper = ARRAY ['A' .. 'Z'] OF CHAR;
+  Str = ARRAY [1 .. Len] OF ' ' .. 'Z';
+  Chiper = ARRAY [' ' .. 'Z'] OF CHAR;
 VAR
   Msg: Str;
   Code: Chiper;
-  I: INTEGER; 
-  LengthMessage: 0..Len;   
+  I: INTEGER;
+ 
 PROCEDURE Initialize(VAR Code: Chiper);
 {Присвоить Code шифр замены}
 BEGIN {Initialize}
@@ -32,14 +32,15 @@ BEGIN {Initialize}
   Code['P'] := 'K';
   Code['Q'] := '$';
   Code['R'] := 'D';
-  Code['S'] := 'H';
+  Code['S'] := 'H';  
   Code['T'] := '*';
   Code['U'] := 'F';
   Code['V'] := 'E';
   Code['W'] := 'T';
   Code['X'] := 'C';
   Code['Y'] := 'B';
-  Code['Z'] := 'A'
+  Code['Z'] := 'A';
+  Code[' '] := '&'
 END;  {Initialize}
  
 PROCEDURE Encode(VAR Msg: Str);
@@ -47,20 +48,16 @@ PROCEDURE Encode(VAR Msg: Str);
 VAR
   Index: 1 .. Len;
 BEGIN {Encode}
-  FOR Index := 1 TO LengthMessage
+  FOR Index := 1 TO I
   DO
-    IF Msg[Index] IN ['A' .. 'Z']
+    IF Msg[Index] IN (['A' .. 'Z'] + [' '])
     THEN
       WRITE(Code[Msg[Index]])
     ELSE
-      IF Msg[Index] = ' '
-      THEN
-        WRITE('&')
-      ELSE   
-        WRITE(Msg[Index]);
+      WRITE(Msg[Index]);
   WRITELN
 END;  {Encode}
-  
+ 
 BEGIN {Encryption}
   {Инициализировать Code}
   Initialize(Code);
@@ -68,19 +65,16 @@ BEGIN {Encryption}
   DO
     BEGIN
       {читать строку в Msg и распечатать ее}
-      LengthMessage := 0;
       I := 0;
       WHILE NOT EOLN AND (I < Len)
       DO
         BEGIN
-          I := I + 1;
-          LengthMessage := I;
-          READ(Msg[I])
+          I := I + 1;           
+          READ(Msg[I]);
         END;
       READLN;
-      WRITELN;
       {распечатать кодированное сообщение}
       Encode(Msg);
-      WRITELN('Message Length: ', LengthMessage)  
+      WRITELN('Message Length: ', I)
     END
 END.  {Encryption}
