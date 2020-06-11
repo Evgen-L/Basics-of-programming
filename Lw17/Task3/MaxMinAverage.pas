@@ -79,7 +79,9 @@ BEGIN{Stat}
               THEN
                 Max := Number;
             END   
-        END;  
-      WRITELN('Min: ', Min, ' Max: ', Max, ' Average: ', Sum DIV CountNumbers, '.', ((Sum * 100) DIV CountNumbers) MOD 100)
+        END; 
+      IF NOT(Error)
+      THEN   
+        WRITELN('Min: ', Min, ' Max: ', Max, ' Average: ', Sum DIV CountNumbers, '.', ((Sum * 100) DIV CountNumbers) MOD 100)
     END;           
 END.{Stat} 
