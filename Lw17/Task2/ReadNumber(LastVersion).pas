@@ -31,7 +31,8 @@ BEGIN{ReadDigit}
 END;{ReadDigit}
 BEGIN{ReadNumber}
   Digit := 0;
-  WHILE NOT EOLN(FromFile) AND (Number <> -1)
+  Number := 0;
+  WHILE NOT EOLN(FromFile) AND (Number <> -1) AND (Digit <> -1)
   DO
     BEGIN
       ReadDigit(FromFile, Digit); 
@@ -42,10 +43,12 @@ BEGIN{ReadNumber}
       ELSE
         IF Digit <> -1
         THEN
-          Number := Number * 10 + Digit;         
-    END;   
+          Number := Number * 10 + Digit
+        ELSE
+          Digit := -1 
+    END 
 END;{ReadNumber}
 BEGIN{OneDigit}
-  ReadNumber(INPUT, Number);
+  ReadNumber(INPUT, Number); 
   WRITELN('Преобразование: ', Number)             
 END.{OneDigit} 
