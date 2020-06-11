@@ -28,7 +28,7 @@ BEGIN{InsertionSort}
       THEN
         BEGIN
           READ(Extra);
-          WRITELN('Сообщение содержит: ', Extra, '. Игнорируем.');
+          WRITELN('Сообщение содержит: ', Extra, '. Игнорируем.')
         END
       ELSE
         BEGIN
@@ -54,7 +54,7 @@ BEGIN{InsertionSort}
           THEN
             First := Index
           ELSE
-            Arr[Prev].Next := Index;
+            Arr[Prev].Next := Index
         END
     END; {WHILE}
     {Печать списка начиная с Arr[First]}

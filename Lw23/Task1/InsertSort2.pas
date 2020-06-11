@@ -33,7 +33,7 @@ BEGIN{InsertSort2}
       THEN
         FirstPtr := NewPtr
       ELSE
-        Prev^.Next := NewPtr;
+        Prev^.Next:= NewPtr;
     END;
   NewPtr := FirstPtr;
   WHILE NewPtr <> NIL
