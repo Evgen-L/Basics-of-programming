@@ -15,7 +15,7 @@ VAR
   Prev, Curr: 0 .. Max;  
   Extra: CHAR;
   Found: BOOLEAN;
-BEGIN {InsertionSort}
+BEGIN{InsertionSort}
   First := 0;
   Index := 0;
   WHILE NOT EOLN      
