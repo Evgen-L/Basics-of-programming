@@ -1,5 +1,5 @@
 A=X
-B=W
+B = W
 C=V
 D=U
 E=T
