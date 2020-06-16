@@ -1,63 +1,68 @@
 PROGRAM Encryption(INPUT, OUTPUT);
-{РџРµСЂРµРІРѕРґРёС‚ СЃРёРјРІРѕР»С‹ РёР· INPUT РІ РєРѕРґ СЃРѕРіР»Р°СЃРЅРѕ Chiper 
-  Рё РїРµС‡Р°С‚Р°РµС‚ РЅРѕРІС‹Рµ СЃРёРјРІРѕР»С‹ РІ OUTPUT}
+{Переводит символы из INPUT в код согласно Chiper 
+  и печатает новые символы в OUTPUT}
 CONST
   Len = 20;
 TYPE
   Str = ARRAY [1 .. Len] OF ' ' .. 'Z';
   Chiper = ARRAY [' ' .. 'Z'] OF CHAR;
-  SetOfCh = SET OF CHAR;
 VAR
   Msg: Str;
   Code: Chiper;
   I: INTEGER;
   FCode: TEXT;
-  Error: BOOLEAN;
-  AllChar: SetOfCh;  
+  Error: BOOLEAN;  
 PROCEDURE Initialize(VAR Code: Chiper; VAR FCode: TEXT);
 VAR 
-  KeeperOccupiedValues: SET OF CHAR;
+  AvailChForEncoding: SET OF CHAR;
   Ch1, Ch2, Ch3: CHAR;
-{РџСЂРёСЃРІРѕРёС‚СЊ Code С€РёС„СЂ Р·Р°РјРµРЅС‹}
+  NumberString:INTEGER;
+{Присвоить Code шифр замены}
 BEGIN {Initialize}
   RESET(FCode);
-  KeeperOccupiedValues := [];
-  IF NOT EOLN(FCode)
-  THEN
-    READ(FCode, Ch2);
-  IF NOT EOLN(FCode)
-  THEN
-    READ(FCode, Ch3);
+  NumberString := 0;
+  AvailChForEncoding := [];
   WHILE ((NOT EOF(FCode)) AND (NOT Error))
   DO
     BEGIN
-      Ch1 := Ch2;
-      Ch2 := Ch3;
-      READ(FCode, Ch3);
-      IF (Ch2 = '=')
+      NumberString := NumberString + 1;
+      IF NOT EOLN(FCode)
       THEN
-        IF (((Ch1 IN ['A'..'Z']) OR (Ch1 = ' ')) AND NOT(Ch3 IN KeeperOccupiedValues))
-        THEN
-          BEGIN
-            Code[Ch1] := Ch3;
-            KeeperOccupiedValues := KeeperOccupiedValues + [Ch3]
-          END
-        ELSE
-          BEGIN
-            WRITELN('INCORRECT DATA TYPE');
-            ERROR := TRUE
-          END        
+        READ(FCode, Ch1);
+      IF NOT EOLN(FCode)
+      THEN
+        READ(FCode, Ch2);
+      IF NOT EOLN(FCode)
+      THEN
+        READ(FCode, Ch3)
+      ELSE
+        BEGIN
+          WRITELN('INCORRECT DATA TYPE. FORMAT  SYMBOL = SYMBOL', NumberString, 'СТРОКА');
+          Error := TRUE
+        END;
+      IF (((Ch1 IN ['A'..'Z']) OR (Ch1 = ' ')) AND (Ch2 = '=') AND NOT(Ch3 IN AvailChForEncoding))
+      THEN
+        BEGIN
+          Code[Ch1] := Ch3;
+          AvailChForEncoding := AvailChForEncoding + [Ch3]
+        END
+      ELSE
+        BEGIN
+          WRITELN('INCORRECT DATA TYPE. FORMAT  SYMBOL = SYMBOL. You cannot repeat the cipher ', NumberString, ' СТРОКА');
+          ERROR := TRUE
+        END;
+      READLN(FCODE);        
     END
 END;  {Initialize}
  
-PROCEDURE Encode(VAR Msg: Str; VAR AllChar: SetOfCh);
-{Р’С‹РІРѕРґРёС‚ СЃРёРјРІРѕР»С‹ РёР· Code, СЃРѕРѕС‚РІРµС‚СЃС‚РІСѓСЋС‰РёРµ СЃРёРјРІРѕР»Р°Рј РёР· Msg}
+PROCEDURE Encode(VAR Msg: Str);
+{Выводит символы из Code, соответствующие символам из Msg}
 VAR
   Index: 1 .. Len;
 BEGIN {Encode}
   FOR Index := 1 TO I
   DO
-    IF Msg[Index] IN [' '..'Z']
+    IF Msg[Index] IN  (['A'..'Z']+[' '])
     THEN
       WRITE(Code[Msg[Index]])
     ELSE
@@ -66,27 +71,24 @@ BEGIN {Encode}
 END;  {Encode}
   
 BEGIN {Encryption}
-  {РРЅРёС†РёР°Р»РёР·РёСЂРѕРІР°С‚СЊ Code}
+  {Инициализировать Code}
   ASSIGN(FCode, 'code.txt');
   Error := FALSE; 
-  WRITELN(ERROR);
   Initialize(Code, FCode);
   IF NOT(ERROR)
   THEN
     BEGIN
-      
-        {С‡РёС‚Р°С‚СЊ СЃС‚СЂРѕРєСѓ РІ Msg Рё СЂР°СЃРїРµС‡Р°С‚Р°С‚СЊ РµРµ}
-        I := 0;
-        WHILE ((NOT EOLN) AND (I < Len))
-        DO
-          BEGIN
-            I := I + 1;
-            READ(Msg[I])
-          END;
-       
-         WRITELN;
-        WRITELN('ЗАКОДИРОВАННОЕ:');
-        {СЂР°СЃРїРµС‡Р°С‚Р°С‚СЊ РєРѕРґРёСЂРѕРІР°РЅРЅРѕРµ СЃРѕРѕР±С‰РµРЅРёРµ}
-        Encode(Msg, AllChar);  
+      {читать строку в Msg и распечатать ее}
+      I := 0;
+      WHILE ((NOT EOLN) AND (I < Len))
+      DO
+        BEGIN
+          I := I + 1;
+          READ(Msg[I])
+        END;
+      READLN;
+      WRITELN('ЗАКОДИРОВАННОЕ:');
+      {распечатать кодированное сообщение}
+      Encode(Msg);  
     END
 END.  {Encryption}
