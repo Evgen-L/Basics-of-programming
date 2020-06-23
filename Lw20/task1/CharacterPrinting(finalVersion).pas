@@ -5,14 +5,12 @@ CONST
 TYPE
   MaxMinCoordinates = SET OF Min..Max;
 VAR 
-  LetterCoordinates: MaxMinCoordinates;
   Ch: CHAR;
-  i: INTEGER;
-BEGIN
-  WHILE NOT EOLN
-  DO
-    BEGIN
-      READ(Ch);
+PROCEDURE WriteMatrix(VAR Ch: CHAR);
+VAR
+  LetterCoordinates: MaxMinCoordinates;
+  I: INTEGER;  
+BEGIN  
       CASE Ch OF
       'A': LetterCoordinates := [3, 7, 9, 11, 15..20, 21, 25]; 
       'B': LetterCoordinates := [1..4, 6, 10..14, 16, 20..24];
@@ -47,23 +45,27 @@ BEGIN
       IF LetterCoordinates <> []
       THEN
         BEGIN
-          FOR i := Min TO Max 
+          FOR I := Min TO Max 
           DO
             BEGIN
-              IF i IN LetterCoordinates
+              IF I IN LetterCoordinates
               THEN
                 WRITE('X')
               ELSE
                 WRITE(' ');
-              IF i mod 5 = 0
+              IF I mod 5 = 0
               THEN
                 BEGIN
-                  WRITELN('');
-                  IF i = 25
-                  THEN
-                    WRITELN('')
+                  WRITELN('')
                 END  
             END
-        END   
-    END    
-END.  
+        END      
+END;
+BEGIN{PseudoGraphicCharacterPrinting}
+  WHILE NOT EOLN
+  DO
+    BEGIN
+      READ(Ch);
+      WriteMatrix(Ch)
+    END;
+END.{PseudoGraphicCharacterPrinting}  
