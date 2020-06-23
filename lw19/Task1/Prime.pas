@@ -1,40 +1,40 @@
-PROGRAM Prime(INPUT, OUTPUT);
+PROGRAM PrimeNumbers(INPUT, OUTPUT);
 CONST
-  Top = 100;
-  Bottom = 2;
+  Max = 100;
+  Min = 2;
 TYPE
-  SetOfNumbers = SET  OF Bottom..Top;
+  SetOfNumbers = SET OF Min..Max;
 VAR
   LotsOfNumbers: SetOfNumbers;
-  Min, I, Prime: INTEGER;
+  Current, Number, Prime: INTEGER;
 BEGIN
-  LotsOfNumbers := [Bottom..Top];
-  Min := Bottom;
-  WHILE (Min * Min <= Top)
+  LotsOfNumbers := [Min..Max];
+  Current := Min;
+  WHILE (Current <= Max)
   DO
     BEGIN
-      I := Min;
-      IF I IN LotsOfNumbers
+      Number := Current;
+      IF Number IN LotsOfNumbers
       THEN
         BEGIN 
-          Prime := I;
-          I := I + Prime;
-          WHILE I <= Top
+          Prime := Number;
+          Number := Number + Prime;
+          WHILE Number <= Max
           DO
             BEGIN
-              LotsOfNumbers := LotsOfNumbers - [I];  
-              I := I + Prime;
+              LotsOfNumbers := LotsOfNumbers - [Number];  
+              Number := Number + Prime;
             END;
         END; 
-      Min := Min + 1; 
+      Current := Current + 1; 
     END;
-  I := Bottom;
-  WHILE I <= Top
+  Number := Min;
+  WHILE Number <= Max
   DO
     BEGIN
-      IF I IN LotsOfNumbers
+      IF Number IN LotsOfNumbers
       THEN
-        WRITE(I, ' ');
-      I := I + 1
+        WRITE(Number, ' ');
+      Number := Number + 1
     END;
 END.
