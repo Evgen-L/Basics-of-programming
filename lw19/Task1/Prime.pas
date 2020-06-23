@@ -17,6 +17,7 @@ BEGIN
       IF Number IN LotsOfNumbers
       THEN
         BEGIN 
+          WRITE(Number, ' ');
           Prime := Number;
           Number := Number + Prime;
           WHILE Number <= Max
@@ -27,14 +28,5 @@ BEGIN
             END;
         END; 
       Current := Current + 1; 
-    END;
-  Number := Min;
-  WHILE Number <= Max
-  DO
-    BEGIN
-      IF Number IN LotsOfNumbers
-      THEN
-        WRITE(Number, ' ');
-      Number := Number + 1
     END;
 END.
