@@ -2,10 +2,6 @@ PROGRAM Stat(INPUT, OUTPUT);
 VAR
   Number, Max, Min, Sum, CountNumbers: INTEGER;
   Error: BOOLEAN;
-PROCEDURE ReadNumber(VAR FromFile: TEXT; VAR Number: INTEGER);
-{Преобразует строку цифр из файла до первого нецифрового символа,  в соответствующее целое число N}
-VAR
-  Digit: INTEGER;
 PROCEDURE ReadDigit(VAR FromFile: TEXT; VAR Digit: INTEGER);
 {Считывает текущий символ из файла, если он - цифра, возвращает его 
  преобразуя в значение типа INTEGER. Если считанный символ не цифра
@@ -30,6 +26,11 @@ BEGIN{ReadDigit}
       IF Ch = '9' THEN Digit := 9 
     END                
 END;{ReadDigit}
+
+PROCEDURE ReadNumber(VAR FromFile: TEXT; VAR Number: INTEGER);
+{Преобразует строку цифр из файла до первого нецифрового символа,  в соответствующее целое число N}
+VAR
+  Digit: INTEGER;
 BEGIN{ReadNumber}
   Digit := 0;
   Number := 0;
@@ -55,33 +56,30 @@ BEGIN{Stat}
   CountNumbers := 0;
   Sum := 0;
   Error := FALSE;
-  IF NOT EOLN 
-  THEN
+  WHILE (NOT EOLN) AND (NOT Error)
+  DO
     BEGIN
-      WHILE (NOT EOLN) AND (NOT Error)
-      DO
+      ReadNumber(INPUT, Number);
+      IF Number > (MAXINT - Sum)
+      THEN
         BEGIN
-          ReadNumber(INPUT, Number);
-          IF Number > (MAXINT - SUM)
+          WRITELN('У вас имеется слишком большое число');
+          Error := TRUE;
+        END
+      ELSE
+        BEGIN
+          CountNumbers := CountNumbers + 1;
+          Sum := Sum + Number; 
+          IF Number < Min
           THEN
-            BEGIN
-              WRITELN('У вас имеется слишком большое число');
-              Error := TRUE;
-            END
-          ELSE
-            BEGIN
-              CountNumbers := CountNumbers + 1;
-              Sum := Sum + Number; 
-              IF Number < Min
-              THEN
-                Min := Number;
-              IF Number > Max
-              THEN
-                Max := Number;
-            END   
-        END; 
-      IF NOT(Error)
-      THEN   
-        WRITELN('Min: ', Min, ' Max: ', Max, ' Average: ', Sum DIV CountNumbers, '.', ((Sum * 100) DIV CountNumbers) MOD 100)
-    END;           
+            Min := Number;
+          IF Number > Max
+          THEN
+            Max := Number;
+        END   
+    END; 
+  IF NOT(Error)
+  THEN   
+    WRITELN('Min: ', Min, ' Max: ', Max, ' Average: ', Sum DIV CountNumbers, '.', ((Sum * 100) DIV CountNumbers) MOD 100);
+WRITELN;               
 END.{Stat} 
