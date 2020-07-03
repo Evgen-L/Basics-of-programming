@@ -48,6 +48,15 @@ PROCEDURE Encode(VAR Msg: Str);
 VAR
   Index: 1 .. Len;
 BEGIN {Encode}
+  {читать строку в Msg и распечатать ее}
+  I := 0;
+  WHILE NOT EOLN AND (I < Len)
+  DO
+    BEGIN
+      I := I + 1;           
+      READ(Msg[I]);
+    END;
+  READLN;
   FOR Index := 1 TO I
   DO
     IF Msg[Index] IN (['A' .. 'Z'] + [' '])
@@ -63,18 +72,6 @@ BEGIN {Encryption}
   Initialize(Code);
   WHILE NOT EOF
   DO
-    BEGIN
-      {читать строку в Msg и распечатать ее}
-      I := 0;
-      WHILE NOT EOLN AND (I < Len)
-      DO
-        BEGIN
-          I := I + 1;           
-          READ(Msg[I]);
-        END;
-      READLN;
-      {распечатать кодированное сообщение}
-      Encode(Msg);
-      WRITELN('Message Length: ', I)
-    END
+    {распечатать кодированное сообщение}
+    Encode(Msg);
 END.  {Encryption}
