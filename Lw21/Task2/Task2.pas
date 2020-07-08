@@ -3,13 +3,14 @@ PROGRAM Encryption(INPUT, OUTPUT);
   и печатает новые символы в OUTPUT}
 CONST
   Len = 20;
+  PermissibleValues = [' ', 'A'..'Z'];
+  ValidEncryption = [' ' .. 'Z'];
 TYPE
   Str = ARRAY [1 .. Len] OF ' ' .. 'Z';
   Chiper = ARRAY [' ' .. 'Z'] OF CHAR;
 VAR
   Msg: Str;
   Code: Chiper;
-  I: INTEGER;
   FCode: TEXT;
   Error: BOOLEAN;  
 PROCEDURE Initialize(VAR Code: Chiper; VAR FCode: TEXT);
@@ -40,7 +41,7 @@ BEGIN {Initialize}
           WRITELN('INCORRECT DATA TYPE. FORMAT  SYMBOL = SYMBOL', NumberString, 'СТРОКА');
           Error := TRUE
         END;
-      IF (((Ch1 IN ['A'..'Z']) OR (Ch1 = ' ')) AND (Ch2 = '=') AND NOT(Ch3 IN AvailChForEncoding))
+      IF ((Ch1 IN PermissibleValues ) AND (Ch2 = '=') AND NOT(Ch3 IN AvailChForEncoding) AND (Ch3 IN ValidEncryption)) 
       THEN
         BEGIN
           Code[Ch1] := Ch3;
@@ -54,41 +55,40 @@ BEGIN {Initialize}
       READLN(FCODE);        
     END
 END;  {Initialize}
- 
+
 PROCEDURE Encode(VAR Msg: Str);
 {Выводит символы из Code, соответствующие символам из Msg}
 VAR
   Index: 1 .. Len;
+  I: INTEGER;
+  Error: BOOLEAN;
 BEGIN {Encode}
-  FOR Index := 1 TO I
-  DO
-    IF Msg[Index] IN  (['A'..'Z']+[' '])
-    THEN
-      WRITE(Code[Msg[Index]])
-    ELSE
-      WRITE(Msg[Index]);   
-  WRITELN
-END;  {Encode}
-  
-BEGIN {Encryption}
   {Инициализировать Code}
   ASSIGN(FCode, 'code.txt');
   Error := FALSE; 
   Initialize(Code, FCode);
-  IF NOT(ERROR)
-  THEN
+  {читать строку в Msg и распечатать ее}
+  WHILE ((NOT EOF) AND (NOT Error))
+  DO
     BEGIN
-      {читать строку в Msg и распечатать ее}
       I := 0;
-      WHILE ((NOT EOLN) AND (I < Len))
+      WHILE NOT EOLN AND (I < Len)
       DO
         BEGIN
-          I := I + 1;
-          READ(Msg[I])
+          I := I + 1;           
+          READ(Msg[I]);
         END;
       READLN;
-      WRITELN('ЗАКОДИРОВАННОЕ:');
-      {распечатать кодированное сообщение}
-      Encode(Msg);  
-    END
+      FOR Index := 1 TO I
+      DO
+        IF Msg[Index] IN (PermissibleValues)
+        THEN
+          WRITE(Code[Msg[Index]])
+        ELSE
+          WRITE(Msg[Index]);
+      WRITELN               
+    END;
+END;  {Encode}
+BEGIN {Encryption}
+    Encode(Msg);
 END.  {Encryption}
