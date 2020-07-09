@@ -12,8 +12,9 @@ VAR
   Msg: Str;
   Code: Chiper;
   FCode: TEXT;
-  Error: BOOLEAN;  
-PROCEDURE Initialize(VAR Code: Chiper; VAR FCode: TEXT);
+  Error: BOOLEAN;
+  I: INTEGER;  
+PROCEDURE Initialize(VAR Code: Chiper; VAR FCode: TEXT; VAR Error: BOOLEAN);
 VAR 
   AvailChForEncoding: SET OF CHAR;
   Ch1, Ch2, Ch3: CHAR;
@@ -56,29 +57,11 @@ BEGIN {Initialize}
     END
 END;  {Initialize}
 
-PROCEDURE Encode(VAR Msg: Str);
+PROCEDURE Encode(VAR Msg: Str; VAR I: INTEGER);
 {Выводит символы из Code, соответствующие символам из Msg}
 VAR
   Index: 1 .. Len;
-  I: INTEGER;
-  Error: BOOLEAN;
 BEGIN {Encode}
-  {Инициализировать Code}
-  ASSIGN(FCode, 'code.txt');
-  Error := FALSE; 
-  Initialize(Code, FCode);
-  {читать строку в Msg и распечатать ее}
-  WHILE ((NOT EOF) AND (NOT Error))
-  DO
-    BEGIN
-      I := 0;
-      WHILE NOT EOLN AND (I < Len)
-      DO
-        BEGIN
-          I := I + 1;           
-          READ(Msg[I]);
-        END;
-      READLN;
       FOR Index := 1 TO I
       DO
         IF Msg[Index] IN (PermissibleValues)
@@ -87,8 +70,28 @@ BEGIN {Encode}
         ELSE
           WRITE(Msg[Index]);
       WRITELN               
-    END;
 END;  {Encode}
 BEGIN {Encryption}
-    Encode(Msg);
+  {Инициализировать Code}
+  ASSIGN(FCode, 'code.txt');
+  Error := FALSE; 
+  Initialize(Code, FCode, Error);
+  {читать строку в Msg и распечатать ее}
+  IF NOT Error
+  THEN
+    BEGIN
+      WHILE NOT EOF
+      DO
+        BEGIN
+          I := 0;
+          WHILE NOT EOLN AND (I < Len)
+          DO
+            BEGIN
+              I := I + 1;           
+              READ(Msg[I]);
+            END;
+          READLN;
+          Encode(Msg, I);
+        END
+    END    
 END.  {Encryption}
